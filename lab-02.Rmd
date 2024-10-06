@@ -93,8 +93,11 @@ plastic_data_all |>
 ```{r Ex2, message = FALSE}
 # Write your code here to answer exercise 2
 
+plastic_data_all %>% group_by(region) %>% 
+  mutate(total_mismanaged_plastic = mismanaged_plastic * population) %>% 
+      summarise(sum(total_mismanaged_plastic))
 
-
+#Asia has the highest total and Oceania has the lowest total.
 ```
 
 
