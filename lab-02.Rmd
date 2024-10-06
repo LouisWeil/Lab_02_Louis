@@ -105,9 +105,11 @@ plastic_data_all %>% group_by(region) %>%
 
 ```{r Ex3, message = FALSE}
 # Write your code here to answer exercise 3
+plastic_data_all %>% mutate(pct_mismanaged_plastic_ocean = mismanaged_plastic_ocean / 
+                              mismanaged_plastic * 100) %>% drop_na() %>% group_by(region)  %>% 
+                  summarise(median_waste = median(pct_mismanaged_plastic_ocean))
 
-
-
+#Africa has the lowest median pct_mismanaged_plastic_ocean.
 ```
 
 
