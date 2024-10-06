@@ -442,40 +442,60 @@ plastic_data_all |&gt;
 <h3>Ex 2.</h3>
 <pre class="r"><code># Write your code here to answer exercise 2
 
-plastic_data_all %&gt;% group_by(region) %&gt;% 
-  mutate(total_mismanaged_plastic = mismanaged_plastic * population) %&gt;% 
-      summarise(sum(total_mismanaged_plastic))</code></pre>
+plastic_data_all1 &lt;- plastic_data_all %&gt;% 
+  mutate(total_mismanaged_plastic = mismanaged_plastic * population)
+plastic_data_all1 %&gt;% group_by(region) %&gt;% summarise(mean = mean(total_mismanaged_plastic))</code></pre>
 <pre><code>## # A tibble: 6 × 2
-##   region                          `sum(total_mismanaged_plastic)`
-##   &lt;chr&gt;                                                     &lt;dbl&gt;
-## 1 Africa                                                13791329.
-## 2 Asia                                                  40016313.
-## 3 Europe                                                 1183580.
-## 4 Latin America and The Caribbean                        6577315.
-## 5 North America                                           294380.
-## 6 Oceania                                                 145766.</code></pre>
+##   region                              mean
+##   &lt;chr&gt;                              &lt;dbl&gt;
+## 1 Africa                           320729.
+## 2 Asia                            1026059.
+## 3 Europe                            38180.
+## 4 Latin America and The Caribbean  193450.
+## 5 North America                    147190.
+## 6 Oceania                           14577.</code></pre>
 <pre class="r"><code>#Asia has the highest total and Oceania has the lowest total.</code></pre>
 </div>
 <div id="ex-3." class="section level3">
 <h3>Ex 3.</h3>
 <pre class="r"><code># Write your code here to answer exercise 3
-plastic_data_all %&gt;% mutate(pct_mismanaged_plastic_ocean = mismanaged_plastic_ocean / 
-                              mismanaged_plastic * 100) %&gt;% drop_na() %&gt;% group_by(region)  %&gt;% 
-                  summarise(median_waste = median(pct_mismanaged_plastic_ocean))</code></pre>
+plastic_data_all2 &lt;- plastic_data_all1 %&gt;% mutate(pct_mismanaged_plastic_ocean = mismanaged_plastic_ocean / mismanaged_plastic * 100)
+
+plastic_data_all2 %&gt;% group_by(region) %&gt;% drop_na() %&gt;%  summarise(median = median(pct_mismanaged_plastic_ocean))</code></pre>
 <pre><code>## # A tibble: 6 × 2
-##   region                          median_waste
-##   &lt;chr&gt;                                  &lt;dbl&gt;
-## 1 Africa                                 0.526
-## 2 Asia                                   0.974
-## 3 Europe                                 0.846
-## 4 Latin America and The Caribbean        3.07 
-## 5 North America                          0.959
-## 6 Oceania                                1.58</code></pre>
+##   region                          median
+##   &lt;chr&gt;                            &lt;dbl&gt;
+## 1 Africa                           0.526
+## 2 Asia                             0.974
+## 3 Europe                           0.846
+## 4 Latin America and The Caribbean  3.07 
+## 5 North America                    0.959
+## 6 Oceania                          1.58</code></pre>
 <pre class="r"><code>#Africa has the lowest median pct_mismanaged_plastic_ocean.</code></pre>
 </div>
 <div id="ex-4." class="section level3">
 <h3>Ex 4.</h3>
-<pre class="r"><code># Write your code here to answer exercise 4</code></pre>
+<pre class="r"><code># Write your code here to answer exercise 4
+plastic_data_all3 &lt;- plastic_data_all2 %&gt;% 
+  rename(
+         pop = population,
+         ocean_plastic = mismanaged_plastic_ocean,
+         mismanaged = mismanaged_plastic,
+         tot_plastic = total_mismanaged_plastic,
+         pct_ocean = pct_mismanaged_plastic_ocean)
+
+plastic_data_all3 &lt;- plastic_data_all %&gt;% mutate(region = str_replace_all(region, &quot;Latin America and the Carribean&quot;, &quot;LAC&quot;))
+
+plastic_data_all3 %&gt;% count(region)</code></pre>
+<pre><code>## # A tibble: 6 × 2
+##   region                              n
+##   &lt;chr&gt;                           &lt;int&gt;
+## 1 Africa                             43
+## 2 Asia                               39
+## 3 Europe                             31
+## 4 Latin America and The Caribbean    34
+## 5 North America                       2
+## 6 Oceania                            10</code></pre>
 </div>
 </div>
 

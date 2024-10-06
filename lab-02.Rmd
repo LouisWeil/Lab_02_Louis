@@ -93,9 +93,9 @@ plastic_data_all |>
 ```{r Ex2, message = FALSE}
 # Write your code here to answer exercise 2
 
-plastic_data_all %>% group_by(region) %>% 
-  mutate(total_mismanaged_plastic = mismanaged_plastic * population) %>% 
-      summarise(sum(total_mismanaged_plastic))
+plastic_data_all1 <- plastic_data_all %>% 
+  mutate(total_mismanaged_plastic = mismanaged_plastic * population)
+plastic_data_all1 %>% group_by(region) %>% summarise(mean = mean(total_mismanaged_plastic))
 
 #Asia has the highest total and Oceania has the lowest total.
 ```
@@ -105,9 +105,10 @@ plastic_data_all %>% group_by(region) %>%
 
 ```{r Ex3, message = FALSE}
 # Write your code here to answer exercise 3
-plastic_data_all %>% mutate(pct_mismanaged_plastic_ocean = mismanaged_plastic_ocean / 
-                              mismanaged_plastic * 100) %>% drop_na() %>% group_by(region)  %>% 
-                  summarise(median_waste = median(pct_mismanaged_plastic_ocean))
+plastic_data_all2 <- plastic_data_all1 %>% mutate(pct_mismanaged_plastic_ocean = mismanaged_plastic_ocean / mismanaged_plastic * 100)
+
+plastic_data_all2 %>% group_by(region) %>% drop_na() %>%  summarise(median = median(pct_mismanaged_plastic_ocean))
+
 
 #Africa has the lowest median pct_mismanaged_plastic_ocean.
 ```
@@ -117,7 +118,14 @@ plastic_data_all %>% mutate(pct_mismanaged_plastic_ocean = mismanaged_plastic_oc
 
 ```{r Ex4, message = FALSE}
 # Write your code here to answer exercise 4
+plastic_data_all3 <- plastic_data_all2 %>% 
+  rename(
+         pop = population,
+         ocean_plastic = mismanaged_plastic_ocean,
+         mismanaged = mismanaged_plastic,
+         tot_plastic = total_mismanaged_plastic,
+         pct_ocean = pct_mismanaged_plastic_ocean)
 
+plastic_data_all3 <- plastic_data_all %>% mutate(region = str_replace_all(region, "Latin America and the Carribean", "LAC"))
 
-
-```
+plastic_data_all3 %>% count(region)
